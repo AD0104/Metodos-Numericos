@@ -10,9 +10,7 @@
     integrity="sha512-VW8/i4IZkHxdD8OlqNdF7fGn3ba0+lYqag+Uy4cG6BtJ/LIr8t23s/vls70pQ41UasHH0tL57GQfKDApqc9izA==" 
     crossorigin="anonymous" 
     referrerpolicy="no-referrer"></script>
-<script 
-    src="https://cdn.plot.ly/plotly-2.20.0.min.js" 
-    charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 {% block body %}
 <section class="hero is-full-page">
@@ -31,7 +29,8 @@
         </div>
     </aside>
     <section class="hero-content is-full-page is-vertical is-right">
-        <section id="graphics-plotter"></section>
+        <canvas id="graphics-plotter"></canvas>
+        <!-- <section id="graphics-plotter"></section> -->
     </section>
 </section>
 {% endblock %}
