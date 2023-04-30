@@ -25,6 +25,7 @@ body {
 .hero {
     position: relative;
     display: flex;
+    flex-flow: row;
     width: 100%;
 }
 
@@ -38,6 +39,7 @@ body {
     min-width: 75%;
     max-width: 80;
     width: auto;
+    background-color: white;
 }
 
 .container {
@@ -63,17 +65,6 @@ body {
     height: 1.5rem;
     text-align: center;
     font-size: 1rem;
-}
-
-.is-left {
-    position: absolute;
-    left: 0;
-    box-shadow: 0px 0px 8px 1px var(--box-shadow-color);
-}
-
-.is-right {
-    position: absolute;
-    right: 0;
 }
 
 .is-vertical {

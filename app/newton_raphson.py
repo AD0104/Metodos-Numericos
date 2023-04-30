@@ -10,35 +10,48 @@ class NewtonRaphson:
         self.x0 = float(x0)
         self.iterations = int(iterations)
         
-    def normal_function(self,iteration_value):
-        return self.parsed_equation.subs(self.x_symbol, iteration_value)
+    def normal_function(self,x_value_in_iteration):
+        return self.parsed_equation.subs(self.x_symbol, x_value_in_iteration)
 
-    def deriv_function(self,iteration_value):
-        return self.diff_equation.subs(self.x_symbol, iteration_value) 
+    def deriv_function(self,x_value_in_iteration):
+        return self.diff_equation.subs(self.x_symbol, x_value_in_iteration) 
 
     def resolve(self, x_value):
-        coordinates_per_iteration = {}
-        return_status = ""
-        for iteration in range(self.iterations):
-            current_coordinates = {}
+        values_per_iteration = {}
+        # return_status = ""
+        for iteration in range(self.iterations+1):
+
+            iteration_values = {}
+
             normal_function_value = self.normal_function(x_value)
             deriv_function_value = self.deriv_function(x_value)
+            if(deriv_function_value == 0):
+                deriv_function_value = -1
+
             h = normal_function_value / deriv_function_value 
             abs_of_h = abs(h)
+
             if (normal_function_value != 0 and abs_of_h >= 0.0001):
-                current_coordinates["x"] = f"{x_value:.5f}"
-                current_coordinates["y"] = f"{normal_function_value:.5f}"
+                # iteration_values["x"] = f"{x_value:.5f}"
+                # iteration_values["y"] = f"{normal_function_value:.5f}"
+                iteration_values[f"x{iteration}"] = f"{x_value:.5f}"
+                iteration_values[f"f({x_value:.5f})"] = f"{normal_function_value:.5f}"
+                iteration_values[f"f'({x_value:.5f})"] = f"{deriv_function_value:.5f}"
                 x_value = x_value - h
-                coordinates_per_iteration[iteration] = current_coordinates
+                values_per_iteration[iteration] = iteration_values
             elif(abs_of_h <= 0.0001):
-                return_status = "Accuracy more than 4 places"
-                current_coordinates["x"] = f"{x_value:.5f}"
-                current_coordinates["y"] = f"{normal_function_value:.5f}"
-                coordinates_per_iteration[iteration] = current_coordinates
+                # return_status = "Accuracy more than 4 places"
+                # iteration_values["x"] = f"{x_value:.5f}"
+                # iteration_values["y"] = f"{normal_function_value:.5f}"
+                iteration_values[f"x{iteration}"] = f"{x_value:.5f}"
+                iteration_values[f"f({x_value:.5f})"] = f"{normal_function_value:.5f}"
+                iteration_values[f"f'({x_value:.5f})"] = f"{deriv_function_value:.5f}"
+                values_per_iteration[iteration] = iteration_values
                 break
             elif(deriv_function_value == 0):
-                return_status = "Derivative is 0"
+                # return_status = "Derivative is 0"
                 break
-        return (return_status, coordinates_per_iteration)
+        # return (return_status, values_per_iteration)
+        return values_per_iteration
 
 

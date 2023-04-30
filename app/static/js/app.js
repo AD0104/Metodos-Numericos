@@ -1,4 +1,6 @@
 let fields_target = retrieve_element_by_id("data-container");
+let currentGraphic;
+let xMin=-10, xMax=10;
 document
     .getElementById("method-selector")
     .addEventListener("change", () => {
@@ -92,7 +94,8 @@ function spawn_newton_raphson_fields(){
         };
         let url = "/newton-raphson";
         let response = await (await fetch(url, configs)).json()
-        console.log(response)
+        console.log(response);
+        // add_tangent(graphics_plotter, equation.replaceAll('**', '^'), 0, 0);
 
     });
     submit_row.appendChild(submit_button);
@@ -102,7 +105,7 @@ function spawn_newton_raphson_fields(){
 function get_labels(){
     // const xValues = math.range(-5, 5, 0.1, true);
     let xValues = [];
-    for(let i=-5; i<=5; i+=0.01)
+    for(let i=xMin; i<=xMax; i+=0.01)
         xValues.push(parseFloat(i).toFixed(4).toString())
     return xValues;
 }
@@ -114,6 +117,10 @@ function get_data(equation, xValues){
         yValues.push(result);
     });
     return yValues
+}
+
+function is_plotted_graph(){
+    return currentGraphic == null;
 }
 
 function draw_graph(target,equation){
@@ -133,5 +140,38 @@ function draw_graph(target,equation){
         data: data
     };
 
-    new Chart(target, config);
+    if(!is_plotted_graph())
+        currentGraphic.destroy();
+
+    currentGraphic = new Chart(target, config);
 }
+
+function add_tangent(canvas, equation, x0, y0){
+    let context = canvas.getContext('2d');
+    let gradient = context.createLinearGradient(xMin, 0, xMax, 0);
+    gradient.addColorStop(0, 'rgba(255, 0, 0, 1)');
+    gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+
+    let expr = math.parse(equation);
+    let equation_derivative = math.derivative(expr, 'x');
+    let m = equation_derivative.evaluate({x: x0}); //This is the slope
+    let b = y0 - m * x0;
+    
+    let x1 = xMin;
+    let y1 = m * (x1-x0) + y0;
+    let x2 = x0 + 2;
+    let y2 = m * (x2-x0) + y0;
+
+    currentGraphic.data.datasets.push({
+        type: 'line',
+        label: 'Tangent',
+        data: [{x:x1,y:y1},{x:x2,y:y2}],
+        fill: false,
+        borderColor: gradient,
+        borderWidth: 10,
+        pointRadius: 10
+    });
+
+    currentGraphic.update();
+}
+
