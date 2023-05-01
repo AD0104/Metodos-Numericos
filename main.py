@@ -27,4 +27,4 @@ def newton_raphson():
 
     newton = NewtonRaphson(equation, initial_x, iterations)
     iteration_values = newton.resolve(newton.x0)
-    return json_response({'status':200,'message':'Ok', 'iteration-values': iteration_values})
+    return json_response({'status':200,'message':'Ok', 'iteration_values': iteration_values})

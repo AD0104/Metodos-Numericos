@@ -1,5 +1,6 @@
 from sympy.parsing.sympy_parser import parse_expr
-from sympy import symbols
+from sympy.core.power import Pow
+from sympy import symbols, Piecewise
 
 class NewtonRaphson:
     def __init__(self, equation, x0, iterations):
@@ -35,8 +36,8 @@ class NewtonRaphson:
                 # iteration_values["x"] = f"{x_value:.5f}"
                 # iteration_values["y"] = f"{normal_function_value:.5f}"
                 iteration_values[f"x{iteration}"] = f"{x_value:.5f}"
-                iteration_values[f"f({x_value:.5f})"] = f"{normal_function_value:.5f}"
-                iteration_values[f"f'({x_value:.5f})"] = f"{deriv_function_value:.5f}"
+                iteration_values[f"f(x{iteration})"] = f"{normal_function_value:.5f}"
+                iteration_values[f"f'(x{iteration})"] = f"{deriv_function_value:.5f}"
                 x_value = x_value - h
                 values_per_iteration[iteration] = iteration_values
             elif(abs_of_h <= 0.0001):
@@ -44,8 +45,8 @@ class NewtonRaphson:
                 # iteration_values["x"] = f"{x_value:.5f}"
                 # iteration_values["y"] = f"{normal_function_value:.5f}"
                 iteration_values[f"x{iteration}"] = f"{x_value:.5f}"
-                iteration_values[f"f({x_value:.5f})"] = f"{normal_function_value:.5f}"
-                iteration_values[f"f'({x_value:.5f})"] = f"{deriv_function_value:.5f}"
+                iteration_values[f"f(x{iteration})"] = f"{normal_function_value:.5f}"
+                iteration_values[f"f'(x{iteration})"] = f"{deriv_function_value:.5f}"
                 values_per_iteration[iteration] = iteration_values
                 break
             elif(deriv_function_value == 0):
