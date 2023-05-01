@@ -70,7 +70,6 @@ export function create_newton_raphson_fields(){
         };
         let url = "/newton-raphson";
         let response = await (await fetch(url, configs)).json()
-        // console.log(response.iteration_values) ;
         create_table_data(retrieve_element_by_id("data-table"), response.iteration_values);
         
 
@@ -112,47 +111,29 @@ export function generate_chart(target,equation){
             label: equation,
             data: yValues,
             fill: false,
-            tension: 0.1
+            tension: 0.4
         }]
+    };
+    const options = {
+        responsive: true,
+        scales: {
+            x: {
+                ticks: {
+                    beginAtZero: true
+                }
+            }
+        }
     };
     const config = {
         type: 'line',
-        data: data
+        data: data,
+        options: options
     };
 
     if(!is_plotted_graph())
         currentGraphic.destroy();
 
     currentGraphic = new Chart(target, config);
-}
-
-
-export function generate_tangent_on_chart(canvas, equation, x0, y0){
-    let context = canvas.getContext('2d');
-    let gradient = context.createLinearGradient(xMin, 0, xMax, 0);
-    gradient.addColorStop(0, 'rgba(255, 0, 0, 1)');
-    gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
-
-    let expr = math.parse(equation);
-    let equation_derivative = math.derivative(expr, 'x');
-    let m = equation_derivative.evaluate({x: x0}); //This is the slope
-    let b = y0 - m * x0;
-    
-    let x1 = xMin;
-    let y1 = m * (x1-x0) + y0;
-    let x2 = x0 + 2;
-    let y2 = m * (x2-x0) + y0;
-
-    currentGraphic.data.datasets.push({
-        type: 'line',
-        label: 'Tangent',
-        data: [{x:x1,y:y1},{x:x2,y:y2}],
-        fill: false,
-        borderColor: gradient,
-        borderWidth: 10,
-        pointRadius: 10
-    });
-    currentGraphic.update();
 }
 
 export function generate_xData(){
