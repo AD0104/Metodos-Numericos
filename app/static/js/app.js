@@ -1,4 +1,4 @@
-import {create_newton_raphson_fields} from "./generators.js";
+import {create_newton_raphson_fields, create_jacobi_fields, create_fixed_point_fields} from "./generators.js";
 import {replace_target_content, retrieve_element_by_id} from "./auxiliaries.js";
 let fields_target = retrieve_element_by_id("data-container");
 document
@@ -10,6 +10,14 @@ document
         switch(current_option_selected){
             case 'newton-raphson':
                 options = create_newton_raphson_fields();
+                replace_target_content(fields_target, options);
+                break;
+            case 'jacobi':
+                options = create_jacobi_fields();
+                replace_target_content(fields_target, options);
+                break;
+            case 'punto-fijo':
+                options = create_fixed_point_fields();
                 replace_target_content(fields_target, options);
                 break;
             default:
